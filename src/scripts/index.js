@@ -29,3 +29,6 @@ initialCards.forEach((cardProperties) => {
   const newCard = createCard(cardProperties, deleteCard);
   placesList.append(newCard);
 });
+
+console.log('Hello, World!');
+import './styles/index.css'; // добавьте импорт главного файла стилей 
