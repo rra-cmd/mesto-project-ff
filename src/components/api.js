@@ -42,12 +42,12 @@ export function addNewCard(name, link) {
   return apiRequest("/cards", "POST", { name, link });
 }
 
-// Поставить лайк любой карточке на сервере
+// Поставить лайк карточке на сервере
 export function addLike(cardId) {
   return apiRequest(`/cards/likes/${cardId}`, "PUT");
 }
 
-// Снять лайк своей карточке на сервере
+// Снять лайк карточке на сервере
 export function removeLike(cardId) {
   return apiRequest(`/cards/likes/${cardId}`, "DELETE");
 }

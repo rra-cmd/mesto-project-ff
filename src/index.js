@@ -13,23 +13,27 @@ import {
 import {
   createCard, // создаёт DOM карточки
   removeCard, // удаляет карточку из DOM
-  handleLikeUpdate, // обновляет лайки
+  handleLikeUpdate, // обрабатывает обновление лайков
+  toggleLike // переключает лайки
 } from "./components/card.js";
 
 // Импорт методов для взаимодействия с API:
 import {
   getProfileData, // получает данные профиля
   updateProfile, // обновляет имя пользователя и род занятий (описание)
-  updateAvatar, // - обновляет картинку профиля пользователя
+  updateAvatar, // обновляет картинку профиля пользователя
   getCards, // получает список карточек
   addNewCard, // добавляет новую карточку
   apiDeleteCard, // удаляет карточку
   addLike, // ставит лайк на карточку
   removeLike, // снимает лайк
-} from "./scripts/api.js";
+} from "./components/api.js";
 
 // Импорт способов проверки форм:
-import { enableValidation, clearValidation } from "./scripts/validation.js";
+import { 
+  enableValidation, 
+  clearValidation 
+} from "./components/validation.js";
 
 // === Поиск элементов в DOM (се элементы сохраняются в переменные для переиспользования)
 
@@ -129,7 +133,6 @@ function submitProfileForm(evt) {
       profileTitle.textContent = updatedUser.name; // Обновляем имя
       profileDescription.textContent = updatedUser.about; // Обновляем описание пользователя
       closePopup(popupEdit); // Закрываем попап
-      clearValidation(formProfile, formValidationConfig); // Сбрасываем проверку
     })
     .catch(console.error) // Обработка ошибок
     .finally(() => toggleSaveButtonState(false, evt.submitter)); // Восстанавливаем кнопку
@@ -171,9 +174,22 @@ editAvatarButton.addEventListener("click", () => {
   openPopup(popupAvatar);
 });
 
+// FIXME: v7 Упрощаем эту часть: убираем второй цикл-проход
 // Закрытие попапов кликом на фон или крестик
-popups.forEach((popup) => popup.addEventListener("mousedown", closePopupByOverlay));
-document.querySelectorAll(".popup__close").forEach((btn) => btn.addEventListener("click", closePopupByCloseButton));
+// popups.forEach((popup) => popup.addEventListener("mousedown", closePopupByOverlay));
+// document.querySelectorAll(".popup__close").forEach((btn) => btn.addEventListener("click", closePopupByCloseButton));
+
+popups.forEach((popup) => {
+  // Добавляем обработчик для закрытия попапа кликом на фон
+  popup.addEventListener("mousedown", closePopupByOverlay);
+
+  // Находим кнопку закрытия внутри текущего попапа и добавляем обработчик
+  const closeButton = popup.querySelector(".popup__close");
+  if (closeButton) {
+    closeButton.addEventListener("click", closePopupByCloseButton);
+  }
+});
+
 
 // Подключение обработчиков отправки форм
 formProfile.addEventListener("submit", submitProfileForm);
@@ -199,9 +215,7 @@ function submitNewCardForm(evt) {
         handleDeleteCard
       );
       placesList.prepend(cardElement); // Добавляем в начало списка
-      formCard.reset(); // Очищаем форму
       closePopup(popupNewCard); // Закрываем попап
-      clearValidation(formCard, formValidationConfig); // Сбрасываем проверку
     })
     .catch(console.error)
     .finally(() => toggleSaveButtonState(false, evt.submitter));
@@ -239,16 +253,19 @@ function handleDeleteCard(cardElement, cardId) {
 }
 
 // Обработчик лайков
-function handleLike(evt, likeCounter, cardId) {
-  const isActive = evt.target.classList.contains("card__like-button_is-active"); // Проверяем лайк
-  const likeMethod = isActive ? removeLike : addLike; // Определяем, что сделать (поставить или убрать лайк)
+function handleLike(cardElement, cardId) {
+  const likeButton = cardElement.querySelector(".card__like-button");
+  const isLiked = likeButton.classList.contains("card__like-button_is-active"); // Проверяем текущее состояние лайка
+  const likeMethod = isLiked ? removeLike : addLike; // Определяем метод (добавить или удалить лайк)
 
-  likeMethod(cardId) // Отправляем запрос
+  likeMethod(cardId) // Отправляем запрос на сервер
     .then((updatedCard) => {
-      handleLikeUpdate(evt, likeCounter, updatedCard); // Обновляем
+      // Обновляем состояние лайка через функцию из card.js
+      toggleLike(cardElement, !isLiked, updatedCard.likes.length);
     })
     .catch(console.error);
 }
+
 
 // Открытие попапа редактирования профиля
 editProfileButton.addEventListener("click", () => {

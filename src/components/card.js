@@ -35,7 +35,8 @@ export function createCard(cardData, userId, openImagePopup, onLike, onDelete) {
   cardImage.addEventListener("click", () => openImagePopup(cardData.link, cardData.name));
 
   // Обработка лайка: передаём нажатие на сердечко, счётчик и ID карточки
-  likeButton.addEventListener("click", (evt) => onLike(evt, likeCounter, cardData._id));
+  // likeButton.addEventListener("click", (evt) => onLike(evt, likeCounter, cardData._id));
+  likeButton.addEventListener("click", () => onLike(card, cardData._id));
 
   // Удаление карточки. Проверяем: если карточку создал пользователь,  добавляем обработчик удаления, иначе удаляем кнопку из DOM
   if (cardData.owner && userId === cardData.owner._id) {
@@ -48,4 +49,16 @@ export function createCard(cardData, userId, openImagePopup, onLike, onDelete) {
 }
 export function removeCard(element) {
   element.remove();
+}
+
+// Функция для обновления состояния лайка внутри карточки
+export function toggleLike(cardElement, isLiked, likeCount) {
+  const likeButton = cardElement.querySelector(".card__like-button");
+  const likeCounter = cardElement.querySelector(".card__like-count");
+
+  // Переключаем состояние кнопки лайка
+  likeButton.classList.toggle("card__like-button_is-active", isLiked);
+
+  // Обновляем счетчик лайков
+  likeCounter.textContent = likeCount;
 }
