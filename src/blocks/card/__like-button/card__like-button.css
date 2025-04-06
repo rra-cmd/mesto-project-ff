@@ -1,13 +1,20 @@
+/* Блок с сердечком и счетчиком лайков */
+.card__like {
+  /*  outline: 2px dashed blue;*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* отступ между сердечком и счетчиком лайков установлен согласно параметру spacing в макете Figma */
+  gap: 3px;
+}
+
+/* Сердечко */
 .card__like-button {
   width: 21px;
   height: 18px;
-  background: transparent url('../../../images/like-inactive.svg') no-repeat;
-  
-  background-size: 21px 18px;
+  background: transparent url("../../../images/like-inactive.svg") no-repeat;
   border: none;
   cursor: pointer;
-  padding: 0;
-  margin: 0;
   -webkit-transition: 0.3s;
   -moz-transition: 0.3s;
   -ms-transition: 0.3s;
@@ -16,5 +23,14 @@
 }
 
 .card__like-button:hover {
+  /*  outline: 2px dashed yellow;*/
   opacity: 0.6;
+}
+
+.card__like-count {
+  /*   outline: 2px dashed green;*/
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0%;
 }

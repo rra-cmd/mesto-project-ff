@@ -11,12 +11,27 @@
   border-radius: 2px;
   border: none;
   transition: visibility 0s, background 0.3s;
-  margin-top: 48px;
+  margin-top: 21px;
 }
 
 .popup__button:hover {
   background: rgba(0, 0, 0, 0.8);
   cursor: pointer;
+}
+
+/* Если хотя бы одно из полей не прошло проверку, кнопка «Сохранить» должна быть неактивной. Если оба поля прошли — активной. Цвета неактивных кнопок возьмите из макета. */
+
+.popup__button_disabled {
+ /* outline: 2px dashed red; outline-offset: 2px; */
+  cursor: default;
+  border: 1px solid rgba(0,0,1,0.3);
+  color: rgba(0,0,1,0.3);
+  background: transparent;
+}
+
+.popup__button_disabled:hover {
+  cursor: default;
+  background-color: transparent;
 }
 
 @media screen and (max-width: 568px) {

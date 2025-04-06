@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mesto</title>
-    <!-- <link rel="stylesheet" href="./pages/index.css"> -->
   </head>
   <body class="page">
     <div class="page__content">
@@ -14,7 +13,9 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img class="profile__image" src="<%=require('./images/avatar.jpg')%>" alt="Фотография путешественника" />
+          <div class="profile__image">
+            <button class="profile__image-edit" type="button"></button>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
             <button class="profile__edit-button" type="button"></button>
@@ -27,30 +28,49 @@
         </section>
       </main>
       <footer class="footer page__section">
-        <p class="footer__copyright">© 2021 Mesto Russia</p>
+        <p class="footer__copyright">© 2025 Mesto Russia</p>
       </footer>
+      <!-- Попап картинки пользователя -->
+      <div class="popup popup_type_avatar popup_is-animated">
+        <div class="popup__content popup__content-avatar">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Обновить аватар</h3>
+          <form class="popup__form" name="update-avatar" novalidate>
+            <input type="url" id="form__type_url" name="link" data-error-message="Введите ссылку на изображение" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required />
+            <span class="form__error form__type_url-error" aria-live="polite"> </span>
+            <button type="submit" class="button popup__button" aria-describedby="empty-error">Сохранить</button>
+          </form>
+        </div>
+      </div>
+      <!-- Попап редактирования профиля-->
       <div class="popup popup_type_edit popup_is-animated">
         <div class="popup__content">
           <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Редактировать профиль</h3>
-          <form class="popup__form" name="edit-profile">
-            <input type="text" name="name" class="popup__input popup__input_type_name" placeholder="Имя" value="Имя" required />
-            <input type="text" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" value="Занятие" required />
-            <button type="submit" class="button popup__button">Сохранить</button>
+          <form class="popup__form" name="edit-profile" novalidate>
+            <input type="text" id="form__input_name" pattern="^[a-zA-Zа-яА-ЯЁё \-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" aria-describedby="name-error" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40" />
+            <span class="form__error form__input_name-error" id="name-error" aria-live="polite"> </span>
+            <input type="text" id="input__description" pattern="^[a-zA-Zа-яА-ЯЁё \-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" aria-describedby="description-error" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" minlength="2" maxlength="200" required />
+            <span class="form__error input__description-error" id="description-error" aria-live="polite"> </span>
+            <button type="submit" class="button popup__button" aria-describedby="empty-error">Сохранить</button>
           </form>
         </div>
       </div>
+      <!-- Попап добавления картинки-->
       <div class="popup popup_type_new-card popup_is-animated">
         <div class="popup__content">
           <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Новое место</h3>
-          <form class="popup__form" name="new-place">
-            <input type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required />
-            <input type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required />
-            <button type="submit" class="button popup__button">Сохранить</button>
+          <form class="popup__form" name="new-place" novalidate>
+            <input type="text" id="input__place-name" pattern="^[a-zA-Zа-яА-ЯЁё \-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" aria-describedby="description-error" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" minlength="2" maxlength="30" required />
+            <span class="form__error input__place-name-error" id="input__place-name-error" aria-live="polite"> </span>
+            <input type="url" id="form__type_url" name="link" data-error-message="Введите адрес сайта" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required />
+            <span class="form__error form__type_url-error" aria-live="polite"> </span>
+            <button type="submit" class="button popup__button" aria-describedby="empty-error">Сохранить</button>
           </form>
         </div>
       </div>
+      <!-- Попап открытия картинки-->
       <div class="popup popup_type_image popup_is-animated">
         <div class="popup__content popup__content_content_image">
           <button type="button" class="popup__close"></button>
@@ -58,16 +78,26 @@
           <p class="popup__caption"></p>
         </div>
       </div>
+      <!-- Попап удаления картинки-->
+      <div class="popup popup_type_confirm-delete popup_is-animated">
+        <div class="popup__content popup__content-card">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Вы уверены?</h3>
+          <button type="submit" class="button popup__button">Да</button>
+        </div>
+      </div>
     </div>
-    <!-- <script src="./scripts/cards.js"></script> -->
-    <!-- <script src="./scripts/index.js" defer></script> -->
+    <!-- Шаблон карточки -->
     <template id="card-template">
       <li class="places__item card">
         <img class="card__image" src="" alt="" />
         <button type="button" class="card__delete-button"></button>
         <div class="card__description">
           <h2 class="card__title"></h2>
-          <button type="button" class="card__like-button"></button>
+          <div class="card__like">
+            <button type="button" class="card__like-button"></button>
+            <span class="card__like-count"></span>
+          </div>
         </div>
       </li>
     </template>

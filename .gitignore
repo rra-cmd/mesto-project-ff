@@ -1,2 +1,5 @@
 node_modules
 dist
+# Игнорировать все .DS_Store файлы
+**/.DS_Store
+.DS_Store

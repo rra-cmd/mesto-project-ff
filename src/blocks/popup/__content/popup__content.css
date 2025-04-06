@@ -1,4 +1,5 @@
 .popup__content {
+  /* outline: 2px dashed orange; outline-offset: 7px; */
   max-width: 430px;
   width: 100%;
   min-height: 330px;
@@ -7,6 +8,14 @@
   position: relative;
   box-sizing: border-box;
   padding: 34px 36px;
+}
+
+.popup__content-avatar {
+  min-height: 181px;
+}
+
+.popup__content-card {
+  min-height: 181px;
 }
 
 @media screen and (max-width: 568px) {
